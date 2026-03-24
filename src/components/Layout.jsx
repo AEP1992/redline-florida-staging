@@ -8,7 +8,6 @@ const navItems = [
   { path: '/roster', label: 'Roster', icon: RosterIcon },
   { path: '/gear', label: 'Gear', icon: GearIcon },
   { path: '/manufacturers', label: 'Manufacturers', icon: MfrIcon },
-  { path: '/analytics', label: 'Analytics', icon: AnalyticsIcon },
 ];
 
 export default function Layout({ user, onLogout }) {
