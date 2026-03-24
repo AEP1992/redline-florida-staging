@@ -83,6 +83,8 @@ export default function Departments() {
     { key: 'status', header: 'Status', render: (r) => <StatusBadge status={r.status} /> },
     { key: 'personnel', header: 'Personnel', accessor: (r) => r.stats.ff_count },
     { key: 'gear', header: 'Gear Items', accessor: (r) => r.stats.gear_count },
+    { key: 'avgAge', header: 'Avg Gear Age', render: (r) => <span>{r.avgGearAge || '0.0'} yrs</span> },
+    { key: 'mfrs', header: 'Manufacturers', render: (r) => <span>{r.manufacturers?.length || 0}</span> },
   ];
 
   return (

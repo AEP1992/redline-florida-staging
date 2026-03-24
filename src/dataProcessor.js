@@ -152,3 +152,51 @@ export {
   isExpired,
   categorizeGear
 };
+
+// Per-department computed stats
+function computeAvgGearAge(gearItems) {
+  const now = new Date();
+  let totalMonths = 0;
+  let count = 0;
+  gearItems.forEach(g => {
+    if (!g.mfgDate) return;
+    const match = g.mfgDate.match(/(\d{1,2})\s*[-\/]\s*(\d{4})/);
+    if (!match) return;
+    const year = parseInt(match[2]);
+    const month = parseInt(match[1]);
+    if (year < 1990 || year > 2030 || month < 1 || month > 12) return;
+    const mfgD = new Date(year, month - 1);
+    const diffMs = now - mfgD;
+    const diffMonths = diffMs / (1000 * 60 * 60 * 24 * 30.44);
+    if (diffMonths > 0 && diffMonths < 600) {
+      totalMonths += diffMonths;
+      count++;
+    }
+  });
+  return count > 0 ? (totalMonths / count / 12).toFixed(1) : '0.0';
+}
+
+function getDeptManufacturers(gearItems) {
+  const mfrMap = {};
+  gearItems.forEach(g => {
+    const mfr = g.manufacturer || 'Unknown';
+    if (mfr === 'Unknown') return;
+    mfrMap[mfr] = (mfrMap[mfr] || 0) + 1;
+  });
+  return Object.entries(mfrMap).sort((a, b) => b[1] - a[1]);
+}
+
+// Enrich departments with computed data
+departments.forEach(dept => {
+  const deptGear = allGear.filter(g => g.departmentId === dept.id);
+  dept.avgGearAge = computeAvgGearAge(deptGear);
+  dept.manufacturers = getDeptManufacturers(deptGear);
+  dept.expiredCount = deptGear.filter(g => isExpired(g.mfgDate)).length;
+  dept.gearByType = {};
+  deptGear.forEach(g => { dept.gearByType[g.type] = (dept.gearByType[g.type] || 0) + 1; });
+});
+
+// Global avg gear age
+const globalAvgGearAge = computeAvgGearAge(allGear);
+
+export { globalAvgGearAge };

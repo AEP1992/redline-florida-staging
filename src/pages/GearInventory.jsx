@@ -4,7 +4,7 @@ import KpiCard from '../components/KpiCard';
 import Breadcrumb from '../components/Breadcrumb';
 import DataTable from '../components/DataTable';
 import StatusBadge from '../components/StatusBadge';
-import { allGear, gearByType, gearByMfr, uniqueMfrs } from '../dataProcessor';
+import { allGear, gearByType, gearByMfr, uniqueMfrs, globalAvgGearAge } from '../dataProcessor';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -125,7 +125,7 @@ export default function GearInventory() {
           icon={<svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>} />
         <KpiCard value={uniqueMfrs.size} label="Manufacturers" color="orange"
           icon={<svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83"/></svg>} />
-        <KpiCard value="0.0 yrs" label="Avg Age" color="navy"
+        <KpiCard value={`${globalAvgGearAge} yrs`} label="Avg Age" color="navy"
           icon={<svg className="w-5 h-5 text-navy" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>} />
       </div>
 
