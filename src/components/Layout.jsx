@@ -8,6 +8,7 @@ const navItems = [
   { path: '/roster', label: 'Roster', icon: RosterIcon },
   { path: '/gear', label: 'Gear', icon: GearIcon },
   { path: '/manufacturers', label: 'Manufacturers', icon: MfrIcon },
+  { path: '/analytics', label: 'Analytics', icon: AnalyticsIcon },
 ];
 
 export default function Layout({ user, onLogout }) {
@@ -163,6 +164,10 @@ function RosterSmIcon() {
 
 function DeptSmIcon() {
   return <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h1m4 0h1m4 0h1M12 3l9 4H3l9-4z"/></svg>;
+}
+
+function AnalyticsIcon({ className }) {
+  return <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>;
 }
 
 function MfrIcon({ className }) {
