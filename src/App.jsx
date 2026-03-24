@@ -9,6 +9,7 @@ import FirefighterProfile from './pages/FirefighterProfile';
 import GearInventory from './pages/GearInventory';
 import Search from './pages/Search';
 import GearEdit from './pages/GearEdit';
+import Manufacturers from './pages/Manufacturers';
 import Login from './pages/Login';
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/roster/:id" element={<FirefighterProfile />} />
           <Route path="/gear" element={<GearInventory />} />
           <Route path="/gear/:id/edit" element={<GearEdit />} />
+          <Route path="/manufacturers" element={<Manufacturers />} />
           <Route path="/search" element={<Search />} />
         </Route>
       </Routes>
