@@ -13,6 +13,10 @@ export default function GearEdit() {
     return firefighters.filter(f => f.departmentId === gear.departmentId);
   }, [gear]);
 
+  const [showNewFF, setShowNewFF] = useState(false);
+  const [newFFLast, setNewFFLast] = useState('');
+  const [newFFFirst, setNewFFFirst] = useState('');
+
   const [form, setForm] = useState(() => {
     if (!gear) return {};
     return {
@@ -136,14 +140,72 @@ export default function GearEdit() {
           {/* Assigned Roster */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1.5">Assigned Roster</label>
-            <select
-              value={form.firefighterId}
-              onChange={(e) => setForm({ ...form, firefighterId: Number(e.target.value) })}
-              className="w-full px-3 py-2.5 border border-surface-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy/20 bg-white"
-              data-testid="select-assigned-roster"
-            >
-              {sameDeptFfs.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
-            </select>
+            {!showNewFF ? (
+              <div className="space-y-2">
+                <select
+                  value={form.firefighterId}
+                  onChange={(e) => setForm({ ...form, firefighterId: Number(e.target.value) })}
+                  className="w-full px-3 py-2.5 border border-surface-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy/20 bg-white"
+                  data-testid="select-assigned-roster"
+                >
+                  {sameDeptFfs.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setShowNewFF(true)}
+                  className="text-xs font-semibold text-navy hover:text-navy-light flex items-center gap-1"
+                  data-testid="button-add-new-firefighter"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+                  Assign to new firefighter
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-xs font-semibold text-blue-800 mb-2">New Firefighter</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    placeholder="Last Name *"
+                    value={newFFLast}
+                    onChange={(e) => setNewFFLast(e.target.value)}
+                    className="px-3 py-2 border border-blue-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy/20"
+                    data-testid="input-new-ff-last"
+                  />
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    value={newFFFirst}
+                    onChange={(e) => setNewFFFirst(e.target.value)}
+                    className="px-3 py-2 border border-blue-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy/20"
+                    data-testid="input-new-ff-first"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => { setShowNewFF(false); setNewFFLast(''); setNewFFFirst(''); }}
+                    className="text-xs text-gray-500 hover:text-gray-700"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (newFFLast.trim()) {
+                        setForm({ ...form, firefighterId: -1, newFirefighter: `${newFFLast.trim()}, ${newFFFirst.trim()}`.trim().replace(/, $/, '') });
+                      }
+                    }}
+                    className="text-xs font-semibold text-navy hover:text-navy-light"
+                  >
+                    Confirm
+                  </button>
+                </div>
+                {form.newFirefighter && (
+                  <p className="text-xs text-green-700 font-medium">Will assign to: {form.newFirefighter}</p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Manufacturer */}
