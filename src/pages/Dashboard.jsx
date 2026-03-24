@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import KpiCard from '../components/KpiCard';
 import Breadcrumb from '../components/Breadcrumb';
 import { totals, passRate, statusBreakdown, expiredCount, allGear } from '../dataProcessor';
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const oosCount = statusBreakdown.OOS;
   const repairCount = statusBreakdown.REPAIR;
   const healthPct = parseFloat(passRate);
@@ -56,18 +58,21 @@ export default function Dashboard() {
               label="Expired Gear"
               count={expiredCount}
               desc="Items past expiration date requiring immediate replacement"
+              onClick={() => navigate('/gear?filter=expired')}
             />
             <UrgentItem
               icon={<svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>}
               label="Out of Service"
               count={oosCount}
               desc="Equipment currently pulled from active duty"
+              onClick={() => navigate('/gear?filter=oos')}
             />
             <UrgentItem
               icon={<svg className="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01M10.29 3.86l-8.4 14.55c-.55.95.14 2.14 1.23 2.14h16.76c1.09 0 1.78-1.19 1.23-2.14l-8.4-14.55a1.38 1.38 0 00-2.42 0z"/></svg>}
               label="Action Required"
               count={repairCount}
               desc="Items flagged for follow-up or maintenance"
+              onClick={() => navigate('/gear?filter=repair')}
             />
           </div>
         </div>
@@ -97,15 +102,19 @@ export default function Dashboard() {
   );
 }
 
-function UrgentItem({ icon, label, count, desc }) {
+function UrgentItem({ icon, label, count, desc, onClick }) {
   return (
-    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors" data-testid={`urgent-${label.toLowerCase().replace(/\s+/g, '-')}`}>
+    <div
+      className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+      data-testid={`urgent-${label.toLowerCase().replace(/\s+/g, '-')}`}
+      onClick={onClick}
+    >
       <div className="flex-shrink-0">{icon}</div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-semibold text-gray-900">{label} ({count})</div>
         <div className="text-xs text-gray-500 truncate">{desc}</div>
       </div>
-      <svg className="w-4 h-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
     </div>
   );
 }
